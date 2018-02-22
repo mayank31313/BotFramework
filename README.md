@@ -8,14 +8,14 @@ Prerequisite
   
   Initialising Bot Builder...
   #	You can skip this step if you are not using LUIS
-    	IAlgorithmProtocols.mapParameters.put("luisURL",  "http://192.168.0.107:8080/Jasper/JasperAI?");
+    	IAlgorithmProtocols.mapParameters.put("luisURL",  [srevr ip address...]);
     	IAlgorithmProtocols.mapParameters.put("intentClassPath", "Y:\\EclipseJavaProjects\\LamdasTest\\bin\\ai\\mayank\\Intents");
 		
     
  # Pass the Activity to Bot:
   
 protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//response.getWriter().append("Served at: ").append(request.getContextPath());
+		response.getWriter().append("Served at: ").append(request.getContextPath());
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		Activity a = new Activity();
 		a.contextId = request.getParameter("contextId");
