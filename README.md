@@ -7,12 +7,12 @@ Prerequisite
   This API is only for Educational purpose
   
   Initialising Bot Builder...
- 	# You can skip this step if you are not using LUIS
+  #	You can skip this step if you are not using LUIS
     	IAlgorithmProtocols.mapParameters.put("luisURL",  "http://192.168.0.107:8080/Jasper/JasperAI?");
     	IAlgorithmProtocols.mapParameters.put("intentClassPath", "Y:\\EclipseJavaProjects\\LamdasTest\\bin\\ai\\mayank\\Intents");
 		
     
-  Pass the Message to Bot:
+ # Pass the Activity to Bot:
   
 protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
@@ -27,9 +27,9 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 		IDialogContext.map.put(a.contextId, null); //create a unique model
 		response.getWriter().println(a.toString());
 	}
-      
- protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//response.setHeader("Access-Control-Allow-Origin", "*");
+
+protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setHeader("Access-Control-Allow-Origin", "*");
 		BufferedReader reader = request.getReader();
 		StringBuilder builder = new StringBuilder();
 		String read;
@@ -37,7 +37,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 			builder.append(read);
 		}
 		read = builder.toString();
-
+		
 		Activity activity = Activity.createActivity(read);
 		IDialogContext context = IDialogContext.map.get(activity.contextId);
 		final String uuid = activity.contextId;
