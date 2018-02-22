@@ -7,9 +7,9 @@ Prerequisite
   This API is only for Educational purpose
   
   Initialising Bot Builder...
-  	You can skip this step if you are not using LUIS
-    IAlgorithmProtocols.mapParameters.put("luisURL",  "http://192.168.0.107:8080/Jasper/JasperAI?");
-    IAlgorithmProtocols.mapParameters.put("intentClassPath", "Y:\\EclipseJavaProjects\\LamdasTest\\bin\\ai\\mayank\\Intents");
+ 	# You can skip this step if you are not using LUIS
+    	IAlgorithmProtocols.mapParameters.put("luisURL",  "http://192.168.0.107:8080/Jasper/JasperAI?");
+    	IAlgorithmProtocols.mapParameters.put("intentClassPath", "Y:\\EclipseJavaProjects\\LamdasTest\\bin\\ai\\mayank\\Intents");
 		
     
   Pass the Message to Bot:
