@@ -7,24 +7,60 @@ Prerequisite
   This API is only for Educational purpose
   
   Initialising Bot Builder...
-  
-    BotBuilder.classPath = request.getRealPath("/"); // Create a ClassPath
-		BotBuilder.isLuisApplication = false; // Turns off LUIS Implementation
-		
-		Message msg = BotBuilder.createBot([Field Class Object comes here],new Message()); // Allocate a New Builder
+  	You can skip this step if you are not using LUIS
+    IAlgorithmProtocols.mapParameters.put("luisURL",  "http://192.168.0.107:8080/Jasper/JasperAI?");
+    IAlgorithmProtocols.mapParameters.put("intentClassPath", "Y:\\EclipseJavaProjects\\LamdasTest\\bin\\ai\\mayank\\Intents");
 		
     
   Pass the Message to Bot:
   
-    response.setContentType("text/json");
-		Message outGoingMessage = BotBuilder.getBotState(request.getReader());
-		response.getWriter().println(outGoingMessage.toString());
-    
-    Where,
-      request is the object of HttpServletRequest and
-      response is the object of HttpServletResponse
+protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//response.getWriter().append("Served at: ").append(request.getContextPath());
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		Activity a = new Activity();
+		a.contextId = request.getParameter("contextId");
+		if(a.contextId == null)	a.contextId = UUID.randomUUID().toString();
+		else if(IDialogContext.map.get(a.contextId) != null) {
+			IDialogContext context = IDialogContext.map.get(a.contextId);
+			context.Done();
+		}
+		IDialogContext.map.put(a.contextId, null); //create a unique model
+		response.getWriter().println(a.toString());
+	}
       
-      
+ protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//response.setHeader("Access-Control-Allow-Origin", "*");
+		BufferedReader reader = request.getReader();
+		StringBuilder builder = new StringBuilder();
+		String read;
+		while((read=reader.readLine())!=null) {
+			builder.append(read);
+		}
+		read = builder.toString();
+
+		Activity activity = Activity.createActivity(read);
+		IDialogContext context = IDialogContext.map.get(activity.contextId);
+		final String uuid = activity.contextId;
+		if(context == null || activity.isTaskCompleted){
+			context = DialogContext.createContext(null,activity,true); // For using LUIS
+			context = DialogContext.createContext([class object],activity,false) //For Single Task
+		}		
+		context.setActivity(activity);
+		System.out.println("ActivitySet");
+		synchronized (context) {
+			context.notify();
+		}
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		activity = context.getActivity();
+		activity.contextId = uuid;
+		response.getWriter().println(activity.toString());
+		IDialogContext.map.put(activity.contextId, context);
+	}
+	
 # Client side code
 
 	public static void main(String[] args) throws ClientProtocolException, IOException {
